@@ -10,9 +10,11 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Todo {
+model Artist {
   id        String   @id @default(uuid())
+  name      String
   createdAt DateTime @default(now())
-  text      String
-  completed Boolean
+  updatedAt DateTime @default(now())
+
+  @@map("artist")
 }

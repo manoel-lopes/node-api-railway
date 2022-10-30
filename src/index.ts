@@ -10,48 +10,46 @@ app.use(express.json());
 app.use(express.raw({ type: "application/vnd.custom-type" }));
 app.use(express.text({ type: "text/html" }));
 
-app.get("/todos", async (req, res) => {
-  const todos = await prisma.todo.findMany({
+app.get("/artists", async (req, res) => {
+  const artists = await prisma.artist.findMany({
     orderBy: { createdAt: "desc" },
   });
 
-  res.json(todos);
+  res.json(artists);
 });
 
-app.post("/todos", async (req, res) => {
-  const todo = await prisma.todo.create({
+app.post("/artists", async (req, res) => {
+  const artist = await prisma.artist.create({
     data: {
-      completed: false,
-      createdAt: new Date(),
-      text: req.body.text ?? "Empty todo",
+      name: 'artist1'
     },
   });
 
-  return res.json(todo);
+  return res.json(artist);
 });
 
-app.get("/todos/:id", async (req, res) => {
+app.get("/artists/:id", async (req, res) => {
   const id = req.params.id;
-  const todo = await prisma.todo.findUnique({
+  const artist = await prisma.artist.findUnique({
     where: { id },
   });
 
-  return res.json(todo);
+  return res.json(artist);
 });
 
-app.put("/todos/:id", async (req, res) => {
+app.put("/artists/:id", async (req, res) => {
   const id = req.params.id;
-  const todo = await prisma.todo.update({
+  const artist = await prisma.artist.update({
     where: { id },
     data: req.body,
   });
 
-  return res.json(todo);
+  return res.json(artist);
 });
 
-app.delete("/todos/:id", async (req, res) => {
+app.delete("/artists/:id", async (req, res) => {
   const id = req.params.id;
-  await prisma.todo.delete({
+  await prisma.artist.delete({
     where: { id },
   });
 
@@ -61,16 +59,16 @@ app.delete("/todos/:id", async (req, res) => {
 app.get("/", async (req, res) => {
   res.send(
     `
-  <h1>Todo REST API</h1>
+  <h1>artist REST API</h1>
   <h2>Available Routes</h2>
   <pre>
-    GET, POST /todos
-    GET, PUT, DELETE /todos/:id
+    GET, POST /artists
+    GET, PUT, DELETE /artists/:id
   </pre>
   `.trim(),
   );
 });
 
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
+  console.log(`The server is running on http://localhost:${port}`);
 });
