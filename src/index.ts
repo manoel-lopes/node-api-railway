@@ -6,10 +6,6 @@ const prisma = new PrismaClient();
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.use(express.json());
-app.use(express.raw({ type: "application/vnd.custom-type" }));
-app.use(express.text({ type: "text/html" }));
-
 app.get("/artists", async (req, res) => {
   const artists = await prisma.artist.findMany({
     orderBy: { createdAt: "desc" },
@@ -54,19 +50,6 @@ app.delete("/artists/:id", async (req, res) => {
   });
 
   return res.send({ status: "ok" });
-});
-
-app.get("/", async (req, res) => {
-  res.send(
-    `
-  <h1>artist REST API</h1>
-  <h2>Available Routes</h2>
-  <pre>
-    GET, POST /artists
-    GET, PUT, DELETE /artists/:id
-  </pre>
-  `.trim(),
-  );
 });
 
 app.listen(port, () => {
